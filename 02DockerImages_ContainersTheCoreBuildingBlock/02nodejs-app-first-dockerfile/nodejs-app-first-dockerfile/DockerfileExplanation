@@ -1,0 +1,11 @@
+FROM node
+
+WORKDIR /app
+
+COPY . /app
+#Run is used to run the command when image is createwd
+RUN npm install
+
+EXPOSE 80
+#CMD command tell to run when container is created and not when image is created
+CMD ["node", "server.js"]
