@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-service
+spec:
+  selector:
+    app: users
+  type: LoadBalancer #TO get a communiction to outside world we are using LoadBalancer. Nodeport is within the container.
+  ports:
+    - protocol: TCP
+      port: 8080 #incoming request to the application
+      targetPort: 8080 #inside of pod, where application is communicating.
