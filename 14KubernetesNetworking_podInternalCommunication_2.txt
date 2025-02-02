@@ -1,0 +1,78 @@
+#inorder to check communication between two pods.
+#We are creating another service and pushing the image.
+#So we are modifying the corresponding environment variables
+
+cd auth-api/
+docker build -t academind/kub-demo-auth .
+docker push academind/kub-demo-auth
+
+#Inorder create the multiple container in same pod. It is right to create container in same deployment.yaml file as shown below
+B:\29Docker_Kubernetes\14KubernetesNetworking\03kub-network-03-pod-internal\kub-network-03-pod-internal\kubernetes
+#Serve should not be edited because, userAPi must be reachable from outside word. AuthAPI must not be reachable from outside world.
+
+#Push user image back, as source code with url end points were modified
+cd users-api/
+docker build -t academind/kub-demo-users .
+docker push academind/kub-demo-users
+
+#Apply the changes
+kubectl apply -f=users-deployment.yaml
+
+################################################################################
+#creating pod to pod communication
+#auth-api must not be exposed to outside world. But must communicates with users like last approach. Also communicate with tasks-api
+
+#Thr vatiable AUTH_SERVICE_SERVICE_HOST automatically resolves ipaddress
+
+kubectl get namespaces #see which all namespaces exist. We can assign to any of the create namespaces or to default namespace created by Kubernetes. B:\29Docker_Kubernetes\14KubernetesNetworking\04kub-network-04-automatic-domain-names\kub-network-04-automatic-domain-names\Kubernetes   Check user-deployement.yaml
+
+#Do the similar implementation with tasks. SO the environmental variable created can used for docker. Default names created for the Kubernetes world.
+B:\29Docker_Kubernetes\14KubernetesNetworking\05kub-network-05-all-services-connected\kub-network-05-all-services-connected\Kubernetes
+
+#buld the image
+docker build -t academind/kub-demo-tasks .
+docker push academind/kub-demo-tasks
+
+#Allready depoyed service can continue to run
+kubectl apply -f=tasks-service.yaml -f=tasks-deployment.yaml
+
+kubectl get deployments
+
+#if any of the environmental variable needed in the source code is not provided. The pods will not be created. it throws up an error
+B:\29Docker_Kubernetes\14KubernetesNetworking\05kub-network-05-all-services-connected\kub-network-05-all-services-connected\Kubernetes --> tasks-deployment.yaml
+
+#to know the ipaddress to send the route to
+minikube service tasks-service
+#Whe nvalidating the service. Provide authersation in header accordingly video 238
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

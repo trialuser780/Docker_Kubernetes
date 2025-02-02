@@ -1,0 +1,112 @@
+#inorder to run an application on Kubernetes. You need images. So we are creating images through the docker file
+
+docker build -t kub-first-app .
+
+#Rename to push to repo
+#docker tag nameofApp(kub-first-app) ResorceonRepo(academind/kub-first-app)
+docker tag kub-first-app academind/kub-first-app
+
+#Push your image to docker hub
+docker push academind/kub-first-app
+
+
+#TO  work on commands using kube control
+#TO imerative approch of deployment of clusters
+kubectl create deployment first-app --image=academind/kub-first-app
+
+kubectl get pods
+
+minikube dashboard
+
+#We can create a service here
+kubectl create 
+
+#we can create various type  clusterIp,nOdeport, loadblancer
+kubectl expose deployment first-app --type=LoadBalancer --port=8080
+
+
+#We can check if the following deployment was created
+#ClusterIp was created by default,not by us. output for below command based on the prior run command
+kubectl get services
+
+#We can make minikube identify this service(deploymrnt) running on our machine
+#The ip addres provided will open the webapplication provided
+#if we go to errors page, the app is not designedto view it. SO it gets restarted as the pods are monitored
+#It can be seen with Kubernetes dashboard
+minikube service first-app
+
+#To scale the deployment, replicas can be created
+kubectl scale deployment/first-app --replicas=3 deployment.apps/first-app scaled
+
+#To see the pods deployed
+kubectl get pods
+
+#############################################################################
+#WHen source code is modified, Ithas to be saved and rebuilt
+#docker build -t academind/kub-first-app:tag-(VersionNumber-2)2 .
+docker build -t academind/kub-first-app:2 .
+
+#push image to docker hub
+docker push academind/kub-first-app:2
+
+#Inorder to setup the deployment to new image we can give name ofthe image
+#kubectl set image deployment/first-app seeingCntainerNameInUIandsettingthenameto(kub-first-app=academind)/kub-first-app
+kubectl set image deployment/first-app kub-first-app=academind/kub-first-app:2
+
+#TO know status of the deployment
+kubectl roolout status deployment/first-app
+###########################################################################################
+#To check history of the deployment
+kubectl roolout history deployment/first-app
+
+#TO undo the ipdates and go back to arlier deployment or revision
+kubectl roolout undo deployment/first-app --to-revision=1
+
+#Deleting the application
+kubctl delete service first-app
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

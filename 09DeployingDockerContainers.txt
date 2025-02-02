@@ -1,0 +1,77 @@
+#Buikding a simple node image for the app developed
+docker build -t node-dep-example .
+
+docker run -d --rm --name node-dep -p 80:80 node-dep-example
+
+##Start a virtual machine - ec2 instance
+#SSh intio the instance- windows using wsl or putty. Go ahead with gitbash
+
+Please note that the following command (which is used in the next lecture) will unfortunately not work anymore:
+
+amazon-linux-extras install docker
+Instead, use this approach / these commands:
+
+sudo yum update -y
+sudo yum -y install docker
+ 
+sudo service docker start
+ 
+sudo usermod -a -G docker ec2-user
+Make sure to log out + back in after running these commands.
+
+Once you logged back in, run this command:
+
+sudo systemctl enable docker
+Thereafter, you can check whether Docker is available by running:
+
+docker version
+
+####################################################################
+#Get he image pushedto doker hub to run in on the remote machine
+#Login as root user
+sudo docker run -d --rm -p 80:80 academind/node-example-1
+
+#inbound rule - security group
+HTTP 80 - any Ip
+
+##################################################
+#Self managed container
+#ECS
+
+
+################################################
+#When deploying multiple contianers onamazon ECS we cannot use docker-compose files
+#The networking beidge is not longer created.
+#So we will have to change the URl accordingly
+
+#Build the container with URL modified between local and global
+docker build -t goals-node ./backend
+
+docker tag goals-node academind/goals-node
+
+docker push academind/goals-node
+####################################
+#WHen volume is added
+#Create a security group
+
+#Inbound rules
+NFS -> select security group previously chosen
+
+#############
+#Amazon EFS file system
+#Select the created new security group
+
+#From the container specific file
+mount he data/db of container internal storage with EFS file created
+#When multiple containers are writing to same folder or directlory. It crashes it.
+#Here we are delectig he other container manually
+
+##################################################
+#For front end
+#Reffer the following folder 
+B:\29Docker_Kubernetes\09DeployingDockerContainers\10deployment-09-finished\deployment-09-finished\frontend
+#modify the Docker file
+DockerfileExplain.prod
+
+#build the image of frontend. By modifying the url to reach accordingly
+docker build -f frontend/Dockerfile.prod -t academind/goals-react ./frontend

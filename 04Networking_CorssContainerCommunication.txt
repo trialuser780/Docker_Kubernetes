@@ -1,0 +1,52 @@
+#Build the image
+docker build -t favorites-node .
+
+#Run contianerOn image built
+docker run --name favourites -d --rm -p 3000:3000 favorites-node
+
+#inorder for application inside container to talk to localhost/hostmahine. So it translates into ipaddress as seen from wiyhin the container
+mongodb://host.docker.internal:27017/swfavourites
+
+
+############################################################################################
+#Communication between containers
+docker run -d --name mongodb mongo
+
+#Use docker inspect command to know the ip address of the container ruuning the mongodb
+docker container inspect mongodb
+
+#Cpy the ip address inn Network settings and change the host to ipaddress-172.17.0.2 to connect it to server
+#Then buile the image again. So the changes are alrted in the layers
+docker build -t favorites-node .
+
+
+#Run container
+docker run --name favourites -d --rm -p 3000:3000 favorites-node
+
+#####################################################################
+#Using networks to start communication between contianers insted of hard coding ip address like previous commands above
+docker container prune #Remove non running container
+
+#Create a network, which can help us talk to the other contianers
+docker network create favorites-net
+
+#check all the network created 
+docker network ls
+
+#Now with the created network run the coontianer
+docker run -d --name mongodb --network favorites-net mongo
+
+
+#Even the other containers has to be same network inorder to talk to each other
+docker build -t favorites-node .
+#docker run --name favourites --network samenetworkAsModngoDB -d --rm -p 3000:3000 favorites-node
+docker run --name favourites --network favorites-net -d --rm -p 3000:3000 favorites-node
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,56 @@
+#Run docker container with mongodb image
+docker run -d --name mongodb --rm -d -p 27017:27017 mongo
+
+#cd into node application folder
+docker build -t goals-node .
+
+#RUn the container
+docker run --name goals-backend --rm -d -p 80:80 goals-node
+
+#Run the build and run frontend container
+docker build -t goals-react .
+
+#react app has to be run in interactive way, so that has to be provided
+docker run --name goals-frontend --rm -d -p 3000:3000 -it goals-react
+
+##########################################################################################
+#Putting docker in same network for communication
+
+docker network create goals-net
+
+docker run --name mongodb --rm -d --network goals-net mongo
+
+#The network is needed for the mongo db, publishing is still needed for the react app
+docker run --name goals-backend --rm -d -p 80:80 --network goals-net goals-node
+
+docker build -t goals-react .
+#As react app runs in the browser. Itcannot resolve ip addresse. And it need not have network related info. It based on how react is built
+docker run --name goals-frontend --rm -p 3000:3000 -it goals-react
+
+#########################################################################
+#to make mongodb data persistent
+#docker run --name mongodb -v NamedVolume:/PathWhereMongoDbSavesData(data/db) --rm -d --network goals-net mongo
+docker run --name mongodb -v data:/data/db --rm -d --network goals-net mongo
+
+#Adding password security to database
+#docker run --name mongodb -v data:/data/db --rm -d --network goals-net -e MONGO_INITDB_ROOT_USERNAME=usernameTODefine -e MONGO_INITDB_ROOT_PASSWORD=passwordTOset mongo
+
+docker run --name mongodb -v data:/data/db --rm -d --network goals-net -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=secret mongo
+
+
+#Creating named volumes so the logs created persist
+#docker run --name goals-backend -v logs:/app/logs -v "ActuaPathOFHostSystem:/app" -v "volumesThatNeednotBemodifed" --rm -d -p 80:80 --network goals-net goals-node
+
+docker run --name goals-backend -v logs:/app/logs -v "B:\29Docker_Kubernetes\05MultiContainerApplicationWithDocker\03multi-02-finished\multi-02-finished\backend:/app" -v /app/node_modules --rm -d -p 80:80 --network goals-net goals-node
+
+docker logs goals-backend
+
+#to run react app
+docker run -v "B:\29Docker_Kubernetes\05MultiContainerApplicationWithDocker\03multi-02-finished\multi-02-finished\frontend\src:/app/src" --name goals-frontend --rm -p 3000:3000 -it goals-react
+
+
+
+
+
+
+

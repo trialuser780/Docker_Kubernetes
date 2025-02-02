@@ -1,0 +1,242 @@
+#To build docker imagein the application folder
+docker build .
+
+#To run docker on the port specified
+#docker run -publish 3000:3000 idOFImage(c0ce12ed11f3726e3ca3086680701709628a57a982c52f6fa8432274a5658e7b  
+#We need to publish as we are running on a container
+docker run -p 3000:3000 c0ce12ed11f3726e3ca3086680701709628a57a982c52f6fa8432274a5658e7b  
+
+#TO get the list of all container
+docker ps
+
+
+#TO stop the container
+#docker stop nameodContainer
+
+docker stop quizzical_rosalind
+
+#TO interact with the containier within the cmd we need adda flag 
+#docker run -it NameOFCOntianer
+docker run -it quizzical_rosalind
+
+###########################################################################
+#Creating our custome images
+
+#Creating an image based on the written docker file
+docker build .
+
+docker run -p outsideportOurSystem:DOckerContainerExposedPOrt c0ce12ed11f3726e3ca3086680701709628a57a982c52f6fa8432274a5658e7b 
+#EXPOSE 80
+docker run -p 3000:80 c0ce12ed11f3726e3ca3086680701709628a57a982c52f6fa8432274a5658e7b
+
+#######################################
+#if source code is modified and hanged, we need to rebuild this image
+docker build .
+
+#####################################################
+#We do not have use run command which creates a container, so we just start an existing container
+#When we are restarting an container already stopped, the below command is used
+docker start nameOFImage 
+
+#iF we want to see the logs and ongoing transaction with the application, we can go attached mode, which is defaulr when container started with docker run command
+#docker run -p 8000:80 -detachMode(d) a34b57bcbbca8d56642f24359b664a7252dc64bd921f68398473ad7cb88f77ae
+docker run -p 8000:80 -d a34b57bcbbca8d56642f24359b664a7252dc64bd921f68398473ad7cb88f77ae
+
+#To come back to attach mode, back from detach mode
+docker attach nameOFImage 
+docker attach inspiring_swirles
+
+#To find the past logs printed by the container
+docker logs nameOFImage
+docker logs inspiring_swirles
+
+#TO get future log oututs if initially it was in detachd mode
+docker logs -f inspiring_swirles
+
+#To restart a stopped conmtainer in attached mode right from the start
+#docker start -a nameOFContianer
+docker start -a inspiring_swirles 
+
+#TO run docker container in interactive mode, where input and output is exposed
+docker run -it ImageName(withSHAnumber- 185d8ad0dbe5598b1a919acb8914044bd4317f5c6d92005473e0b8f0ecea7fcd)
+docker run -it 185d8ad0dbe5598b1a919acb8914044bd4317f5c6d92005473e0b8f0ecea7fcd   
+
+#When restaring the container we have to run in two modes
+docker start -a -i 185d8ad0dbe5598b1a919acb8914044bd4317f5c6d92005473e0b8f0ecea7fcd
+docker start -a -i compassionate_cannon
+#Gives the number of live containers
+docker ps
+
+#TO remove obsolete container
+docker rm nameContianer
+
+#TO get all the images
+docker images
+
+#To remove images
+docker rmi imagename(sha-name)
+
+#TO remove all images not used
+docker image prune
+
+
+#To remove containers after it is run
+#docker run -p 3000:80 -d --remove(rm) sha-id(image)
+docker run -p 3000:80 -d --rm sha-id(image)
+
+#TO view more info of image
+docker image inspect sha-id
+
+#Docker has a command to copy files into a container
+docker cp dummy/. compassionate_cannon:/test
+#Cpying back from container back to local disk, Could be helpfull for copying logfile
+docker cp compassionate_cannon:/test dummy
+
+#Providing your own names to container
+#docker run -p 3000:80 -d --rm --name containerappname sha-id
+docker run -p 3000:80 -d --rm --name goalsapp sha-id
+
+#providingImages a name and a tag- vaersion
+#docker build -t imagename:version_tag
+docker build -t goals:latest .
+
+
+#To push images to docker hub
+#docker push Image_name
+docker push Image_name
+
+#When rename an image we get a clone of the old image. So we can push to dockerhub
+#The dockerimage should be same as the repository name, if already created, it has to renamed
+docker tag goals:latest keshav42/dockertrial
+
+
+#Create repository on dockerhub after login
+docker login
+#if brower suthentication agree for ssame
+docker push keshav16/dockertrial
+
+#To pull an image. To get upfated image we will have to manually pull and run it. Else the olderversion in system will run
+docker pull keshav16/dockertrial
+
+#Runing the named image with container also named
+docker build -t feeback-node .
+docker run -p 3000:80 -d --name feedback-app --rm feeback-node
+
+#Adding named Volumes to docker file. As analomyus voukmes do not persist
+#docker run -p 3000:80 -d --name feedback-app --rm -v namedVolumeTOCreate:ForDERWITHContainerTOCreate NameOFIMAGE
+docker run -p 3000:80 -d --name feedback-app --rm -v feedback:/app/feedback feeback-node
+
+#Docker volume persist, which can be checked with\
+docker volume ls
+
+#Configuring bind mounts, so the source code is kept ready with contents for the code.NodeAPplication the npm install comads/pip install commands installed dependencies has to retained. it should not be lost, So ananomy vouumes are also provided to retain such files/folders
+# "" -->> "AbsolutePathFolderOFSourceCOde:/app" So codecodes ot break beacuseofSpecialcharacter
+#docker run -p 3000:80 -d --name feedback-app --rm -v feedback:/app/feedback -v "AbsolutePathFolderOFSourceCOde:/app" -v anamuspathrquiredTobeRetained feeback-node
+docker run -p 3000:80 -d --name feedback-app --rm -v feedback:/app/feedback -v "B:\29Docker_Kubernetes\03ManagingDataWorkingwithContainers\02data-volumes-02-added-dockerfile\data-volumes-02-added-dockerfile:/app" -v /app/node_modules feeback-node
+
+#to make the host system files, to be readonly. Hera the tmp is also svd as anaoimou volume mount
+# "" -->> "AbsolutePathFolderOFSourceCOde:/app" So codecodes ot break beacuseofSpecialcharacter
+#docker run -p 3000:80 -d --name feedback-app --rm -v feedback:/app/feedback -v "AbsolutePathFolderOFSourceCOde:/app:ro" -v anamuspathrquiredTobeRetained -v /app/temp feeback-node
+docker run -p 3000:80 -d --name feedback-app --rm -v feedback:/app/feedback -v "B:\29Docker_Kubernetes\03ManagingDataWorkingwithContainers\02data-volumes-02-added-dockerfile\data-volumes-02-added-dockerfile:/app:ro" -v /app/node_modules -v /app/temp feeback-node
+
+#TO inspect a volume created
+docker volume inspect feedback
+
+#TO remove volume
+docker volue rm volumeName
+
+#Usedockerignore file, to not copy ile like depedency folders. WHich could result in loss of installed packages
+
+
+#setting confgurable environmental variables during run time
+docker run -p 3000:8000 --env PORT=8000  -d --name feedback-app --rm -v feedback:/app/feedback -v "B:\29Docker_Kubernetes\03ManagingDataWorkingwithContainers\02data-volumes-02-added-dockerfile\data-volumes-02-added-dockerfile:/app:ro" -v /app/node_modules -v /app/temp feeback-node
+
+
+#setting confgurable environmental variables within the .env folder
+docker run -p 3000:8000 --env-file ./.env  -d --name feedback-app --rm -v feedback:/app/feedback -v "B:\29Docker_Kubernetes\03ManagingDataWorkingwithContainers\02data-volumes-02-added-dockerfile\data-volumes-02-added-dockerfile:/app:ro" -v /app/node_modules -v /app/temp feeback-node
+
+
+#TO configure defaultArguments fro docke fle and run time arguments
+docker build -t feedback-node:dev --build-arg DEFAULT_PORT=8000 .
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,59 @@
+#Creating a baseline code framework
+#Here run the node application in interactive and detach mode. This will keep container up and running
+docker run -it -d node
+
+#TO run some commands in a running container. which creates a noode project inside of the container. exec always has to be in interactive mode. Else it wont execute
+docker exec -it RunningCOntianerName npm init
+
+#########################################################################################
+#create a utility container
+
+#Create a docker file
+docker build -t node-util .
+
+#Run the command in interacive mode.The utility is create the source code on the host machine. Same as in the container. use bind mount
+docker run -it -v "B:\29Docker_Kubernetes\07UtilityContainerExecutingCommands:/app" node-util npm init
+
+
+#Thr command put in the cmd has higher precedence and overrules the cMD in the dockerfile.
+#The entrypoint gets appended: ENTRYPOINT [ "npm" ]
+docker run -it -v "B:\29Docker_Kubernetes\07UtilityContainerExecutingCommands:/app" mynpm init
+
+
+#Docker-compose exec command is run 
+docker-compose exec
+
+#So utility command will removed oncwe done
+docker-compose run --rm npm init
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

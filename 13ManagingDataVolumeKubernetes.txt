@@ -1,0 +1,65 @@
+B:\29Docker_Kubernetes\13ManagingDataVolumeKubernetes\02kub-data-02-deployment-and-service\kub-data-02-deployment-and-service
+The refreshed from previous section
+#Create repo in docker hub
+docker build -t academing/kub-data-demo .
+
+#Push to docker hub
+docker push academing/kub-data-demo
+##################################################################################################
+B:\29Docker_Kubernetes\13ManagingDataVolumeKubernetes\03kub-data-03-first-volume\kub-data-03-first-volume
+#Volumes
+#Creating an error to check the effetivenss of volumes
+docker build -t academind/kub-data-demo:1 .
+docker push academing/kub-data-demo:1
+
+#THere are multiple type of volumes see documentation AWS/Azure
+# 1. emptyDir is created when a new pod is created
+# 2. hostPath
+
+kubectl apply -f=deployment.yaml
+
+#next type is 3. CSI  --> is ia a adatable service than work for storage for various type of application
+######################################################################
+#persistent Volumes -> Pod and node independent
+https://www.computerweekly.com/feature/Storage-pros-and-cons-Block-vs-file-vs-object-storage
+#All explanation are written in the folder with specific files
+B:\29Docker_Kubernetes\13ManagingDataVolumeKubernetes\05kub-data-05-pv-and-pvc\kub-data-05-pv-and-pvc
+
+#to get storage classes
+kubectl get sc
+
+#apply persistent volume
+kubectl apply -f=host-pv.yaml
+
+#APply perseisten volume claim yaml file
+kubectl apply -f=host-pvc.yaml
+
+#apply deployment.yaml file
+kubectl apply -f=deployment.yaml
+
+#to get all the persistenvolumes
+kubectl get pv
+
+#to get all persistent volume claims
+kubectl get pvc
+
+#to get deployments
+kubectl get deployments
+
+#####################################################################
+#creating environmental variable
+B:\29Docker_Kubernetes\13ManagingDataVolumeKubernetes\06kub-data-06-env\kub-data-06-env
+
+kubectl apply -f=deployment.yaml
+
+############################################
+config map
+B:\29Docker_Kubernetes\13ManagingDataVolumeKubernetes\07kub-data-07-finished\kub-data-07-finished
+
+
+
+
+
+
+
+

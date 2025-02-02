@@ -1,0 +1,100 @@
+#go t oEKS configuration
+
+#provide a name
+kub-dep-demo
+
+#version -->> latest
+
+#IAM roles --> create role --> eks -> eks cluster -> role name -> create role
+
+cluster service role -> use previus role created
+
+https://docs.aws.amazon.com/eks/latest/userguide/creating-a-vpc.html#create-vpc
+cloudFormation -> create stack -> copy url  -> next -> give name -> next -> create stack
+
+#use the vpc created on Amazon EKS
+
+public and private -> next -> create
+
+
+C:\Users\kesha\.kube\config will help in communicating with minikube aswell Amzon clusters
+
+AWS_cli -> install
+
+#create access key with IAM
+
+#In visual studio code, to run commands from it, we need to configure
+aws configure
+
+#privde access key and secret key as downloaded
+
+#run the below command -> it would update C:\Users\kesha\.kube\config to speak to aws cluster
+#aws eks --region us-east-2 update-kubeconfig --name nameOFCluster
+aws eks --region us-east-2 update-kubeconfig --name kub-dep-demo
+
+#########################################################################################
+kub-dep-demo -> Add Node Group - > Create group selected below -> Select the Linux and instance type -> 2 nodes -> next -> create
+
+#creat IAM tab -> create role for Node -> So it can wrte logd talk to other services
+EC2 -> EKSworker,cni, ec2contianer read only. -> next -> Eksnoderule -> create
+
+########################################################################################
+#just apply our yaml file. Without any aws specific configurations
+#cd to kubebetes dirsctory
+
+kubectl apply -f=auth.yaml -f=users.yaml
+
+kubectl get deployments
+
+kubectl get pods
+
+kubectl get services -> url got from get service for below with postman to check
+
+#for minikube we had to get the ip adres - now we can connect directly to aws provided url
+
+#############################################################################################
+#Add csi related configuration
+#https://github.com/kubernetes-sigs/aws-efs-csi-driver
+kubectl apply -k "github.com/kubernetes-sigs/aws-efs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-2.0"
+
+#######################################################################################
+#create a EFS file system in AWS
+#Open ec2 -> security group -> create security group -> name -> use vpc created earlier -> inbound rule -> add rule -> NFS -> (vpc->yourVPc->Copy Ipv4 cider) -> custom -> copied ip -> create security group
+
+#Open EFS - give name -> create vpc -> customize -> next -> remove secutity group (provide the security zone created in previous step ) for both zones. create .Copy the created iD
+
+#to get to know the storage system
+kubectl get sc
+
+
+#https://github.com/kubernetes-sigs/aws-efs-csi-driver/blob/master/examples/kubernetes/static_provisioning/specs/storageclass.yaml
+Place to copy the yaml file definition from
+This script help in configuring the storage calss
+
+B:\29Docker_Kubernetes\15KubernetesDeployment\04kub-deploy-04-volumes-finished\kub-deploy-04-volumes-finished\Kubernetes
+
+#Id changes are made to surce code build and push it
+#id esisting deployment exists. deploy it
+
+kubectl apply -f=users.yaml
+
+#TO check if the data storage is persisten
+#Change replicas to 0
+kubectl apply -f=users.yaml
+
+kubectl get pods
+
+#Change replicas again to 2
+#send request to the url to see the old data again
+kubectl apply -f=users.yaml
+
+#CSI type can use any third party type of storage. You can also go for any of user specified storage  types
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,14 @@
+#To setup the containers and run docker
+docker-compose up
+
+#TO run in detach mode
+docker-compose up -d
+
+#TO bring down all the services, but does not bring down volumes
+docker-compose down
+
+#To bring down with volumes
+docker-compose down -v
+
+#TO force docker to build the images again
+docker-compose up --build

@@ -1,0 +1,108 @@
+#Create a deployment.yaml file in the directory
+#See deplyment_explanation.yaml file created in B:\29Docker_Kubernetes\12KubernetesInActionDeepDive\02kub-action-02-declarative-approach-basics\kub-action-02-declarative-approach-basics
+
+#How to deploy the created .yaml file. Once source yamlcode is modified. The deployment is as below
+kubectl apply -f=deployment.yaml
+
+#To check if deployment ran
+kubectl get deployments
+
+##################################################################
+#service.yaml --->>> Declare a service for this application
+
+To apply the services to the yaml to the deployment
+kubectl apply -f service.yaml
+
+#To view the deplymnet service, provide names in the cmd
+minikube service backend
+
+#TO see all the pods deployed
+#kubectl get pods
+
+#TO delete the resources. can be done imperatively even though we have declared it declaratively
+#TO delete multiple deployment add mutiple-f flag
+kubectl delete -f=deployment.yaml
+kubectl delete -f=deployment.yaml -f=service.yaml
+
+
+###########################################################
+B:\29Docker_Kubernetes\12KubernetesInActionDeepDive\03kub-action-03-merging-config-files\kub-action-03-merging-config-files
+#See explanation in master-deployment_Explanation.yaml file
+#merging multiple files into once
+--- as separator
+#Is ia good practice to keep service part in the first followed by the deployment part
+#Apply the merged file
+kubectl apply -f=master-deployment.yaml
+
+#Expose the service again
+minikube service backend
+
+#Apply the changes. I have doensi smaster-deploymet.yaml. In the video is dones on separate file like before
+kubectl apply -f=master-deployment.yaml 
+
+#Delete the service
+kubectl delete deployments,services -l group=example
+
+##########################################################################################
+#To verify how Kubernetes check the Kubernetes deployment
+#Hwere we define how Kubernetes should verify the deployment of the application
+B:\29Docker_Kubernetes\12KubernetesInActionDeepDive\03kub-action-03-merging-config-files\kub-action-03-merging-config-files
+B:\29Docker_Kubernetes\12KubernetesInActionDeepDive\05kub-action-05-finished\kub-action-05-finished
+kubectl apply -f=deployment.yaml -f=service.yaml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

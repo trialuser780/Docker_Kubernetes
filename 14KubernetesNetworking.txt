@@ -1,0 +1,26 @@
+#This a node js application with 3 type of functionalities. Initally it can be taken care by docker.To understand the task, we can do it with docker
+docker-compose up -d --build
+
+docker-compose down
+#############################################################################################
+#here tweeks in users source code, was to make it available on Kubernetes cluster
+
+#cd into the folder where docker file of the source is present
+docker build -t academind/kub-demo-users .
+
+#push image to repo
+docker push academind/kub-demo-users
+
+#create a folder Kubernetes
+B:\29Docker_Kubernetes\14KubernetesNetworking\02kub-network-02-dummy-user-service\kub-network-02-dummy-user-service\Kubernetes
+
+#dolpy the user-deployment
+kubectl apply -f=users-deployment.yaml
+
+#To check deployrmrnt
+kubectl get pods
+#############
+#to get access through minikube
+minikube service users-service
+
+

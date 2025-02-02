@@ -1,0 +1,61 @@
+B:\29Docker_Kubernetes\14KubernetesNetworking\07kub-network-06-added-frontend\kub-network-06-added-frontend
+
+#front end app deployed with docker
+#build the frontend react app
+docker build -t academind/kub-demo-frontend .
+docker push academind/kub-demo-frontend
+#############React app runs in the browser. so the ip address hardcoded is reachable from minikube
+docker run -p 80:80 -rm -d academind/kub-demo-frontend
+#proper headers hould be included in the sorce file, so that broewers are able to communicate. Unless how we tested with postman
+
+#apply the changes made in sorce code tasks api
+kubectl apply -f=tasks-deployment.yaml
+
+#Frontend app now deployed using kubernetes
+B:\29Docker_Kubernetes\14KubernetesNetworking\08kub-network-07-finished\kub-network-07-finished\kubernetes
+
+#Adter deployment and service files are written. run below command
+kubectl apply -f=frontend-service.yaml -f=frontend-deployment.yaml
+
+#to see if the service is creates
+kubectl get pods
+
+#here to see the service through minikube we need to get ip. elase we canuse cloid service provided ip
+minikube service frontend-service
+
+###################################################################3
+#the hardcoded ip address in the source code can be avoided with reverse proxy.
+#As this is internal it would be stable. But not recommended
+#uild image and push, after sorce code is modifies with proxy
+docker build -t academind/kub-demo-frontend .
+docker push academind/kub-demo-frontend
+
+
+#delete the service and reapply service
+kubectl apply -f=frontend-service.yaml -f=frontend-deployment.yaml
+
+  location /api/ {
+    proxy_pass http://tasks-service.default:8000/;
+  }
+  
+#here the ngnix is listening on 8000 port ofthe task-api. DNS will be resolved so the tasks-service can be used.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
