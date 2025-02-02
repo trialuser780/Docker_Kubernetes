@@ -1,0 +1,13 @@
+#as is defined as a seperate pod. Service has to created accordingly
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+spec:
+  selector:
+    app: auth
+  type: ClusterIP #To make in not reachanble from outside world we make it ClusterIp. This also perform load balancing, but does not exposeto outside world
+  ports:
+    - protocol: TCP
+      port: 80 #Based on the application port exposed
+      targetPort: 80 #For other pods to connect to this service

@@ -1,0 +1,19 @@
+#creating pod to pod communication
+#auth-api must not be exposed to outside world. But must communicates with users like last approach. Also communicate with tasks-api
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-deployment
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: academind/kub-demo-auth:latest
