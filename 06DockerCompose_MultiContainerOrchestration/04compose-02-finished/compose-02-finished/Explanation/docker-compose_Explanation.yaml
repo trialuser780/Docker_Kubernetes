@@ -1,0 +1,52 @@
+version: "3.8"
+services:
+  mongodb:
+    image: 'mongo'
+    volumes: 
+      #      - when single value use this list typr - format
+      #Named volumes has to be represented for specific contianer services as well as in global volume
+      - data:/data/db
+    #When using direct env variables we use key value pair
+    # environment: 
+    #   MONGO_INITDB_ROOT_USERNAME: max
+    #   MONGO_INITDB_ROOT_PASSWORD: secret
+      # - MONGO_INITDB_ROOT_USERNAME=max
+    #You also load env variables from a file. SO it is configured in run time  
+    env_file: 
+      - ./env/mongo.env
+  backend:
+    build: ./backend
+    # build:
+    #   context: ./backend
+    #   dockerfile: Dockerfile
+    #   args:
+    #     some-arg: 1
+    ports:
+      - '80:80'
+    volumes: 
+      - logs:/app/logs
+      #The below bind mounts can have relative path. Not like abosulutr patha like last time
+      - ./backend:/app
+      - /app/node_modules
+    env_file: 
+      - ./env/backend.env
+    depends_on:
+      - mongodb
+  frontend:
+    build: ./frontend
+    ports: 
+      - '3000:3000'
+    volumes: 
+      - ./frontend/src:/app/src
+
+    #TO strt the react app in interactive mode replacement for it flag, the following below 2 options has to be setup  
+    stdin_open: true
+    tty: true
+
+    depends_on: 
+      - backend
+
+volumes: 
+  #Second place where named volumes has to be written down
+  data:
+  logs:
