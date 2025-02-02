@@ -1,0 +1,23 @@
+#To build docker imagein the application folder
+docker build .
+
+#To run docker on the port specified
+#docker run -publish 3000:3000 idOFImage(c0ce12ed11f3726e3ca3086680701709628a57a982c52f6fa8432274a5658e7b  
+#We need to publish as we are running on a container
+docker run -p 3000:3000 c0ce12ed11f3726e3ca3086680701709628a57a982c52f6fa8432274a5658e7b  
+
+#TO get the list of all container
+docker ps
+
+
+#TO stop the container
+#docker stop nameodContainer
+
+docker stop quizzical_rosalind
+
+#TO interact with the containier within the cmd we need adda flag 
+#docker run -it NameOFCOntianer
+docker run -it quizzical_rosalind
+
+###########################################################################
+#Creating our custome images
