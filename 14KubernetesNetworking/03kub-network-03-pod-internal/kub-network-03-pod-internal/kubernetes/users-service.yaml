@@ -1,0 +1,13 @@
+#Serve should not be edited because,userAPi must be reachable from outside word. AuthAPI must not be reachable from outside world.
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-service
+spec:
+  selector:
+    app: users
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

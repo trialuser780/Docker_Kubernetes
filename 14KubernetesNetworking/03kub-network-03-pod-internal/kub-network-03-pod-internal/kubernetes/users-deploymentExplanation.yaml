@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-deployment
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: users
+  template:
+    metadata:
+      labels:
+        app: users
+    spec:
+      containers:
+        - name: users #FIrst pod name
+          image: academind/kub-demo-users:latest #using latest tag, kubernetes refetches and reevaluates the image
+          env: #two containers are in the same pod, to communication between the mis possible with localhost
+            - name: AUTH_ADDRESS
+              value: localhost #locahhost is for internal communication within th pod between contianers
+        - name: auth #seconf pod name
+          image: academind/kub-demo-auth:latest
