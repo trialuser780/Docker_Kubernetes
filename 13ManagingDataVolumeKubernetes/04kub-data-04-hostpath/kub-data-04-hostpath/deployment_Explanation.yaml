@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: story-deployment
+spec: 
+  replicas: 2
+  selector:
+    matchLabels:
+      app: story
+  template:
+    metadata:
+      labels:
+        app: story
+    spec:
+      containers:
+        - name: story
+          image: academind/kub-data-demo:1
+          volumeMounts:
+            - mountPath: /app/story
+              name: story-volume
+      volumes:
+        - name: story-volume
+          hostPath: #allos mutiple pods to have the access to the volumue with main pod (node) on which volume is created
+            path: /data #here path on the hostmachine not on contianer(similar to bind mount)
+            type: DirectoryOrCreate #it should be created if does not exsist

@@ -1,0 +1,14 @@
+apiVersion: v1 #Similar to service
+kind: PersistentVolume #Service we are looking for
+metadata:
+  name: host-pv
+spec:
+  capacity: 
+    storage: 1Gi #the storagr capacity. REffer documentation
+  volumeMode: Filesystem #There are two types Filesystem and block
+  storageClassName: standard
+  accessModes: #We define below , how we claim that volume
+    - ReadWriteOnce #ReadWriteOnce, ReadOnlyMany, ReadWriteMany
+  hostPath: #Standaalone detached volume from other services
+    path: /data
+    type: DirectoryOrCreate

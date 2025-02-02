@@ -1,0 +1,12 @@
+apiVersion: v1 #c-stands for claim
+kind: PersistentVolumeClaim #persistent volume claim
+metadata:
+  name: host-pvc
+spec:
+  volumeName: host-pv #claiming by name. HEre which persistent volue we need.
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests: 
+      storage: 1Gi #claim volume needed

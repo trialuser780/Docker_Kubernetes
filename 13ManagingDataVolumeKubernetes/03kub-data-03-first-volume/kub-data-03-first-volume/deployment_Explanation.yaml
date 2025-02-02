@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: story-deployment
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: story
+  template:
+    metadata:
+      labels:
+        app: story
+    spec:
+      containers:
+        - name: story
+          image: academind/kub-data-demo:1
+          volumeMounts: #Is used define, where which volume has to be mounted
+            - mountPath: /app/story #path in the container where the emptyDir type volume should be mounted
+              name: story-volume #Name from the list below mentioned volume
+      volumes: #All volumes required should be mentioned here. So containers can use them
+        - name: story-volume
+          emptyDir: {} #Iff do not have configuration use {}, but only use enptyDir type volume. #emptyDir is created (Basically creates a empty directory per pod) when a new pod is created
