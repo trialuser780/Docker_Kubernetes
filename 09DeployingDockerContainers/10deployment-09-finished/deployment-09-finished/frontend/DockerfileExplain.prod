@@ -1,0 +1,25 @@
+FROM node:14-alpine as build
+
+WORKDIR /app
+
+COPY package.json .
+
+RUN npm install
+
+COPY . .
+#Use run instead of CMD to build the image. As the previous way of development for frontend application, wont work
+RUN npm run build
+
+#Use a light weight to host the build stage image, from 2 stage begins
+FROM nginx:stable-alpine
+
+#Here we are copting from previous build stage to ngnix stage folder defined as per the documentation
+COPY --from=build /app/build /usr/share/nginx/html
+
+EXPOSE 80
+
+#This is the way if we are starting ngnix ourself . It is defined in the base image
+CMD ["nginx", "-g", "daemon off;"]
+
+
+
