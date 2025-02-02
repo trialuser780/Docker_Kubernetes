@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: second-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: second-app
+      tier: backend
+  template:
+    metadata: 
+      labels:
+        app: second-app
+        tier: backend
+    spec: 
+      containers:
+        - name: second-node
+          image: academind/kub-first-app:2 #Or you can also specifiy latest as the tag
+          imagePullPolicy: Always #If you want to pull the image always
+          livenessProbe:
+            httpGet: #/hhtp service can send to just / as metioned below. Or application specific
+              path: / #Check the helath /someAoyherPage to check it health
+              port: 8080 # it can send it port 8080
+            periodSeconds: 3 #How often it should be performed
+            initialDelaySeconds: 5 #We can tell kubernetes how long we have to wait after the initial deployment
+        # - name: ...
+        #   image: ...

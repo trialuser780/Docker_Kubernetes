@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment #Type of object we want to create->> job, service, deployment
+metadata:
+  name: second-app-deployment #nameofApplication
+spec: #Specification of the deployment
+  replicas: 1 #Number of pods needed
+  selector: #We are providinginfomation of key value pair the kubernetes has to control. The key value pairs not provide in the poertion will not be controlled. It has tobe provifed
+    matchLabels:
+      app: second-app
+      tier: backend
+  template: #The pods that have to be created as aprt of the deployment. It is a pod object
+    metadata: 
+      labels: #create a label(name)
+        app: second-app #name of the app
+        tier: backend
+    spec: #Here we are configuring how pod has to be configured
+      containers: #Mutiple contianers can be defined inside a pod, as lists
+        - name: second-node #NameofContainer
+          image: academind/kub-first-app:2 #Image to used
+        # - name: ...
+        #   image: ...

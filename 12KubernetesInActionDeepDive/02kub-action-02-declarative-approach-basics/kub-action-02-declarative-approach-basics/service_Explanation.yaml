@@ -1,0 +1,15 @@
+apiVersion: v1 #Provide the version in the api as per the docuementation
+kind: Service #IT is of service type 
+metadata:
+  name: backend #Provide name of the service
+spec: #WHere we define which pods should be part of this service
+  selector: #We can define names, that has to contolled by service here. Even if they have a diffrent tag name as defined in deployments
+    app: second-app
+  ports:
+    - protocol: 'TCP'
+      port: 80 #outside the contianer to the owrld
+      targetPort: 8080 #inside the contianer, in which the app is working
+    # - protocol: 'TCP' #incase if application has another port, that also has to be exposed
+    #   port: 443
+    #   targetPort: 443
+  type: LoadBalancer #ClusterIp -> default(internally exposed ip). You can expose on ip and nodeof worker node ->(Nodeport). LoadBalancer-> Outsde world access
